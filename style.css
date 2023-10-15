@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+*{
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+}
+
+/* NAVIGATION */
+nav{
+    height: 40px;
+    padding: 10px 150px;
+    background-color:  rgb(109,55,223);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+nav div ul{
+    height: 40px;
+    width: 250px;
+    display: flex;
+    list-style: none;
+    justify-content: space-around;
+    align-items: center;
+}
+nav div ul a{
+    text-decoration: none;
+    color: white;
+}
+
+/* HOME */
+#home{
+    height: calc(100vh - 40px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+#home div{
+    width: 50%;
+}
+#home div p{
+    padding: 10px 0;
+    font-size: 20px;
+    font-weight: 500;
+}
+#home div h1{
+    font-size: 55px;
+}
+#home div p:nth-child(4){
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+#home div a{
+    background-color:  rgb(109,55,223);
+    padding: 10px 15px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: white;
+}
+#home div a:hover{
+    background-color: rgba(109,55,223, 0.8);
+}
+
+/* ABOUT */
+#about{
+    box-sizing: border-box;
+    padding: 50px 150px;
+    height: 100vh;
+}
+#about h1{
+    font-size: 32px;
+    text-align: center;
+}
+#about .box{
+    height: 85%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+#about .box div:first-child{
+    display: flex;
+    justify-content: center;
+}
+#about img{
+    width: 300px;
+}
+#about .box div{
+    width: 50%;
+}
+#about .box div ul{
+    list-style: none;
+    margin-top: 20px;
+}
+#about .box div ul li{
+    margin-top: 7px;
+    display: flex;
+    align-items: center;
+}
+#about .box div ul li span{
+    margin-left: 10px;
+}
+
+/* TO DO LIST */
+#todo{
+    height: calc(100vh - 40px);
+}
+#todo h1{
+    text-align: center;
+    margin: 50px 0;
+    font-size: 36px;
+}
+#todo table{
+    border: 1px solid gray;
+    border-collapse: collapse;
+    width: 500px;
+    margin: 0 auto;
+    text-align: center;
+    margin-bottom: 100px;
+}
+#todo table th{
+    background-color: lightgray;
+}
+#todo table td{
+    width: 500px;
+    height: 50px;
+}
+#todo button{
+    padding: 5px 20px;
+    color: white;
+    border-radius: 10px;
+    border: 0;
+}
+#todo .update{
+    background-color: purple;
+}
+#todo .hapus{
+    background-color: red;
+}
+#todo .submit{
+    background-color: rgb(20, 86, 255);
+}
+#todo .list{
+    height: 100vh;
+    padding: 20px;
+    margin: 20px;
+    margin-bottom: 50px;
+}
+#todo .input{
+    width: 500px;
+    margin: 0 auto;
+}
+#todo .input .input-data{
+    width: 100%;
+    margin-bottom: 5px;
+}
+#todo .input .input-data input{
+    width: 80%;
+}
+
+footer{
+    background-color:  rgb(109,55,223);
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+/* *{
+    border: 1px solid red;
+} */
