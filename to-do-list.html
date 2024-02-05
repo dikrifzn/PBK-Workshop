@@ -1,54 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Personal Portofolio</title>
-</head>
-<body>
-    <!-- NAVIGATION -->
-    <nav>
-        <div>Journey My Self</div>
-        <div>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#about">About</a></li>
-                <li><a href="#">To Do List</a></li>
-            </ul>
-        </div>
-    </nav>
-    <!-- TO DO LIST -->
-    <section id="todo">
-        <h1>To Do List</h1>
-        <div class="input">
-            <div class="input-data">
-                <input type="text" name="" id="">
-                <button class="submit">Submit</button>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>To Do List</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Makan</td>
-                        <td>
-                            <button class="update">Update</button>
-                            <button class="hapus">Hapus</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
 
-    <!-- Footer -->
-    <footer>
-        <p>Copyright 2023 - Wira Sukma Saputra</p>
-    </footer>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Personal Portofolio</title>
+</head>
+
+<body>
+  <!-- NAVIGATION -->
+  <nav>
+    <div>Journey My Self</div>
+    <div>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="#">To Do List</a></li>
+      </ul>
+    </div>
+  </nav>
+  <!-- TO DO LIST -->
+  <section id="todo">
+    <h1>To Do List</h1>
+    <div class="input">
+      <div class="input-data">
+        <input type="text" name="" id="input-todo" placeholder="Tugas..">
+        <button class="submit">Submit</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>To Do List</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="taskList"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Copyright 2023 - Wira Sukma Saputra</p>
+  </footer>
+
+  <script>
+    const taskInput = document.getElementById("input-todo");
+    const taskList = document.getElementById("taskList");
+
+    // Buat atau buka database IndexedDB
+    const request = indexedDB.open("TaskDB", 1);
+
+    request.onupgradeneeded = function(event) {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains("tasks")) {
+        db.createObjectStore("tasks", {
+          keyPath: "id",
+          autoIncrement: true
+        });
+      }
+    };
+
+    request.onsuccess = function(event) {
+      const db = event.target.result;
+
+      // Menambahkan tugas
+      document.querySelector(".submit").addEventListener("click", addTask);
+
+      function addTask() {
+        const task = taskInput.value;
+        if (task === "") return;
+
+        const transaction = db.transaction(["tasks"], "readwrite");
+        const objectStore = transaction.objectStore("tasks");
+
+        const newTask = {
+          text: task
+        };
+        const request = objectStore.add(newTask);
+
+        request.onsuccess = function() {
+          taskInput.value = "";
+          fetchTasks();
+        };
+      }
+
+      // Mendapatkan semua tugas
+      function fetchTasks() {
+        while (taskList.firstChild) {
+          taskList.removeChild(taskList.firstChild);
+        }
+
+        const objectStore = db.transaction("tasks").objectStore("tasks");
+        objectStore.openCursor().onsuccess = function(event) {
+          const cursor = event.target.result;
+          if (cursor) {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                            <td>${cursor.value.text}</td>
+                            <td>
+                                <button class="hapus" data-id="${cursor.key}">Hapus</button>
+                            </td>
+                        `;
+            taskList.appendChild(tr);
+            cursor.continue();
+          }
+        };
+      }
+
+      // Hapus tugas
+      taskList.addEventListener("click", function(event) {
+        if (event.target.classList.contains("hapus")) {
+          const taskId = Number(event.target.getAttribute("data-id"));
+          deleteTask(taskId);
+        }
+      });
+
+      function deleteTask(id) {
+        const transaction = db.transaction(["tasks"], "readwrite");
+        const objectStore = transaction.objectStore("tasks");
+        const request = objectStore.delete(id);
+        request.onsuccess = fetchTasks;
+      }
+
+      // Menampilkan tugas saat pertama kali
+      fetchTasks();
+    };
+  </script>
 </body>
+
 </html>
